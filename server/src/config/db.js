@@ -13,13 +13,26 @@ const pool = new Pool({
 const connectDB = async () => {
     try {
         const client = await pool.connect();
+
+        const result = await client.query(`
+            SELECT
+                current_database() AS database,
+                current_schema() AS schema,
+                inet_server_addr() AS host,
+                inet_server_port() AS port
+        `);
+
+        console.log("📊 Database Connection Details:");
+        console.log(result.rows[0]);
+
         console.log("✅ PostgreSQL Connected");
+
         client.release();
     } catch (err) {
-    console.error("❌ Database Connection Failed");
-    console.error(err);
-    process.exit(1);
-}
+        console.error("❌ Database Connection Failed");
+        console.error(err);
+        process.exit(1);
+    }
 };
 
 export { pool };
