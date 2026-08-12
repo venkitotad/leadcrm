@@ -6,11 +6,13 @@ import {
     getMe
 } from "../controllers/authController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import authorize from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
 router.get("/me", authMiddleware, getMe);
+
 
 export default router;
